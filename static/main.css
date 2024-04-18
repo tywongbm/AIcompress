@@ -1,0 +1,128 @@
+#header {
+background-color: #6e82e7;
+color: #fff;
+padding: 20px;
+text-align: center;
+}
+    #header h1 {
+        font-size: 24px;
+        font-family: cursive;
+        color: white;
+        margin: 0px auto;
+    }
+
+    
+#content {
+max-width: 700px;
+margin: 50px auto;
+}
+
+
+.upload-region {
+    background-color: #fff;
+    height: 200px;
+    display: flex;
+    align-items: center; /* vertical center */
+    justify-content: center; /* horizontal center */
+    margin: 20px 0;
+    padding: 50px;
+    border: 2px solid #6e82e7;
+    border-radius: 5px;
+    text-align: center
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)*/
+    }
+
+
+    .upload-region input[type="file"] {
+        display: none;
+    }
+
+    .upload-region p {
+        color: #999;
+    }
+
+    .upload-region .upload-icon {
+        font-size: 100px;
+        color: #999;
+        cursor: pointer;
+    }
+
+    .upload-region.dragover {
+        border: 2px dashed #6e82e7;
+    }
+
+        .upload-region.dragover .upload-icon{
+            color: #6e82e7;
+        }
+
+        .upload-region.dragover p{
+            color: #6e82e7;
+        }
+
+.upload-region .uploading,
+.upload-region .processing,
+.upload-region .success,
+.upload-region .failure {
+    display: none;
+}
+
+/* Bacis style*/
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    }
+
+h1 {
+font-size: 48px;
+font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+color: #6e82e7;
+margin: 20px 0;
+}
+
+h3 {
+    font-size: 24px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color:#616366;
+    font-weight: normal;
+}
+
+p {
+margin: 10px 0;
+}
+
+.button {
+display: inline-block;
+padding: 10px 20px;
+background-color: #6e82e7;
+color: #fff;
+text-decoration: none;
+border-radius: 5px;
+transition: background-color 0.3s ease;
+}
+
+.button:hover {
+background-color: #445fe7;
+}
+
+footer {
+background-color: #f5f5f5;
+color: #999;
+padding: 20px;
+text-align: center;
+font-size: 14px;
+}
+
+input[type="radio"] {
+    border: 1px solid #616366;
+}
+
+input[type="radio"]:hover {
+    border: 1px solid #6e82e7;
+    cursor: pointer;
+}
+
+input[type="radio"]:checked {
+    border: 3px solid #6e82e7;
+}

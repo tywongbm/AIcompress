@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Compress</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+</head>
+
+<body>
+  <!-- Hedaer -->
+  <header id="header">
+    <!--
+      <h1>Our Product Name</h1>
+    -->
+    <h1>CompressAI</h1>
+  </header>
+  
+  <!-- Main -->
+  <div id="content">
+
+    <h1>Online AI Compressor</h1>
+    <!--
+      <h3>Some description (e.g. <b>Smaller</b> files, <b>higher</b> resolution!)</h3>
+    -->
+    <h3><b>Smaller</b> files, <b>higher</b> resolution!</h3>
+
+    <!-- Setting-->
+    <!--
+    <div class="first-option">
+      <label>
+        <input type="radio" name="compression" value="compress" onclick="showSecondOption()">Compress
+      </label>
+      <label>
+        <input type="radio" name="compression" value="decompress" onclick="hideSecondOption()">Decompress
+      </label>
+    </div>
+  -->
+    <div class="second-option">
+      <label>
+        <input type="radio" name="compression-type" value="lossy" display="none";>Lossy
+      </label>
+      <label>
+        <input type="radio" name="compression-type" value="lossless" display="none">Lossless
+      </label>
+    </div>
+
+    <!-- Files upload -->
+    <div class="upload-region">
+
+      <div class="waiting">
+        <label for="file-upload" class="upload-icon">+</label>
+        <input type="file" id="file-upload">
+        <p>Upload or drop files</p>
+      </div>
+
+      <div class="uploading">
+        <p>Uploading to server</p>
+      </div>
+  
+      <div class="processing">
+        <p>Server processing image</p>
+      </div>
+  
+      <div class="success">
+        <p>Processing successful</p>
+        <a href="#" id="downlaod">Downlaod</a>
+        <a href="#" id="try-again">Try another file</a>
+      </div>
+  
+      <div class="failure">
+        <p>Processing failed</p>
+        <a href="#" id="try-again">Try another file</a>
+      </div>
+
+    </div>
+    <!--  <a href="#" class="button">A button</a>-->
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    &copy; HKUST 2024 FYP ZGL1. All rights reserved.
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
