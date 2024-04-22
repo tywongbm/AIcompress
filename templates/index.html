@@ -28,23 +28,31 @@
 
     <!-- Setting-->
     
-    <div class="first-option">
-      <label>
-        <input type="radio" name="compression" value="compress" onclick="showSecondOption()">Compress
-      </label>
-      <label>
-        <input type="radio" name="compression" value="decompress" onclick="hideSecondOption()">Decompress
-      </label>
-    </div>
+      <div class="first-option">
+        <label class="radio-button">
+          <input type="radio" name="compression-type" value="lossless" checked>Lossless
+        </label>
+        <label class="radio-button">
+          <input type="radio" name="compression-type" value="lossy">Lossy
+        </label>
+      </div>
   
+    <!--
     <div class="second-option">
       <label>
-        <input type="radio" name="compression-type" value="lossy" display="none";>Lossy
+        <input type="radio" name="compression" value="compress" checked>Compress
       </label>
       <label>
-        <input type="radio" name="compression-type" value="lossless" display="none">Lossless
+        <input type="radio" name="compression" value="decompress">Decompress
       </label>
     </div>
+    -->
+
+    <!--
+      onclick="showSecondOption()"
+      onclick="hideSecondOption()"
+      display="none"
+    -->
 
     <!-- Files upload -->
     <div class="upload-region">
@@ -65,7 +73,6 @@
   
       <div class="success">
         <p>Processing successful</p>
-        <a href="#" id="downlaod">Downlaod</a>
         <a href="#" id="try-again">Try another file</a>
       </div>
   

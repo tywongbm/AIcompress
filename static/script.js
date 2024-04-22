@@ -1,3 +1,29 @@
+//option1 style
+const radioButtons = document.getElementsByName('compression-type');
+const labels = document.getElementsByClassName('radio-button');
+
+for (let i = 0; i < radioButtons.length; i++) {
+  if (radioButtons[i].checked) {
+    const label = radioButtons[i].parentNode;
+    label.classList.add('selected');
+    break;
+  }
+}
+
+for (let i = 0; i < radioButtons.length; i++) {
+  radioButtons[i].addEventListener('click', function() {
+    for (let j = 0; j < labels.length; j++) {
+      labels[j].classList.remove('selected');
+    }
+
+    if (this.checked) {
+      const label = this.parentNode;
+      label.classList.add('selected');
+    }
+  });
+}
+
+/*
 function showSecondOption() {
     var secondOption = document.querySelector('.second-option');
     secondOption.style.display = 'block';
@@ -7,13 +33,14 @@ function hideSecondOption() {
     var secondOption = document.querySelector('.second-option');
     secondOption.style.display = 'none';
 
-    var compressionTypeRadios = document.getElementsByName('compression-type');
+    var compressionTypeRadios = document.getElementsByName('compression');
     for (var i = 0; i < compressionTypeRadios.length; i++) {
         compressionTypeRadios[i].checked = false;
     } 
 }
+*/
 
-
+//Upload reagion style
 const uploadRegion = document.querySelector('.upload-region');
 
 uploadRegion.addEventListener('dragover', (e) => {
@@ -42,33 +69,28 @@ fileUpload.addEventListener('change', (e) => {
 function handleFiles(files) {
 
     //setting check
-    const firstOption = document.querySelector('.first-option input[name="compression"]:checked');
-    const secondOption = document.querySelector('.second-option input[name="compression-type"]:checked');
+    const firstOption = document.querySelector('.first-option input[name="compression-type"]:checked');
+    /*
+    const secondOption = document.querySelector('.second-option input[name="compression"]:checked');
 
     if (!firstOption) {
-        console.log('Upload fail, please select first option');
+        alert('Upload failed, please select lossless/lossy');
         return;
     }
 
     if (firstOption.value === 'compress' && !secondOption) {
-        console.log('Upload fail, please select second option');
+        alert('Upload failed, please select compress/decompress');
         return;
     }
-
+*/
     const file = files[0];
     const fileName = file.name;
     const fileExtension = fileName.split('.').pop();
 
-    if (firstOption.value === 'compress' && fileExtension !== 'jpg') {
-        console.log('Upload fail, only support .jpg file');
+    if (fileExtension !== 'jpg' ) {
+        alert('Upload failed, only support jpg/png file');
         return;
     }
-
-    if (firstOption.value === 'decompress' && fileExtension !== 'zip') {
-        console.log('Upload fail, only support .zip file');
-        return;
-    }
-
 
     // Uploading
     uploadRegion.classList.add('uploading');
@@ -77,7 +99,9 @@ function handleFiles(files) {
     console.log("uploading")
 
     const formData = new FormData();
-    formData.append('file', file); // 将文件添加到FormData对象中
+    formData.append('file', file);
+    formData.append('option1', firstOption.value);
+    //formData.append('option2', secondOption.value);
 
     fetch('/upload', {
         method: 'POST',
