@@ -88,7 +88,7 @@ function handleFiles(files) {
     const fileExtension = fileName.split('.').pop();
 
     if (fileExtension !== 'jpg' ) {
-        alert('Upload failed, only support jpg/png file');
+        alert('Upload failed, only support jpg file');
         return;
     }
 

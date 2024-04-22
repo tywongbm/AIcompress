@@ -31,12 +31,18 @@ class Tester:
             return (512, 512)
 
     def init_model(self, path):
+        '''
         if torch.cuda.is_available():
             self.device = torch.device("cuda")
             print("Using gpu.")
         else:
             self.device = torch.device("cpu")
             print("Using cpu.")
+        '''
+
+        self.device = torch.device("cpu")
+        print("Using cpu.")
+
 
         self.model = DFNet().to(self.device)
         checkpoint = torch.load(path, map_location=self.device)

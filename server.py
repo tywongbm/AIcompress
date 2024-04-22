@@ -19,18 +19,21 @@ def upload():
 
     option1 = request.form.get('option1')
 
-    command = "python"
 
     if (option1 == "lossless"):
         command = "python"    ### Modify it ###
+        subprocess.call(command, shell=True)
 
     elif (option1 == "lossy"):
-        command = "python lossy/test.py --model lossy/model/model_celeba.pth --img input_image.jpg --mask lossy/mask.png --output lossy/output --merge"
-
+        #command1 = "python lossy/compress.py"
+        #subprocess.call(command1, shell=True)
+        command2 = "python lossy/test.py --model lossy/model/model_celeba.pth --img compressed_image.jpg --mask lossy/mask.png --output lossy/output --merge"
+        subprocess.call(command2, shell=True)
+        shutil.copy("/lossy/output/result/result-compressed_image-mask.png", "/decompressed_image.jpg")
     else:
         print("Invalide options")
 
-    subprocess.call(command, shell=True)
+
     compressed_image_path = 'compressed_image.jpg'
     decompressed_image_path = 'decompressed_image.jpg'
 
