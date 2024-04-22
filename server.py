@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, send_file
+import os
+import shutil
 import io
 from process import modify_image
 import subprocess
@@ -15,16 +17,38 @@ def upload():
     file = request.files['file']
     file.save('input_image.jpg')
 
+    option1 = request.form.get('option1')
 
-    ###### Modify the following code to test your model ######
-    command = "python lossy/test.py --model lossy/model/model_celeba.pth --img input_image.jpg --mask lossy/mask.png --output lossy/output --merge"
+    command = "python"
+
+    if (option1 == "lossless"):
+        command = "python"    ### Modify it ###
+
+    elif (option1 == "lossy"):
+        command = "python lossy/test.py --model lossy/model/model_celeba.pth --img input_image.jpg --mask lossy/mask.png --output lossy/output --merge"
+
+    else:
+        print("Invalide options")
+
     subprocess.call(command, shell=True)
-    output_path = 'lossy/output/result/result-input_image-mask.png'
+    compressed_image_path = 'compressed_image.jpg'
+    decompressed_image_path = 'decompressed_image.jpg'
 
-
-
-    return send_file(output_path, mimetype='image/jpeg', as_attachment=True, download_name='process_iamge.jpg')
-
+    try:
+        compressed_image = send_file(compressed_image_path, mimetype='image/jpeg', as_attachment=True, download_name='compressed_image.jpg')
+        decompressed_image = send_file(decompressed_image_path, mimetype='image/jpeg', as_attachment=True, download_name='decompressed_image.jpg')
+        return [compressed_image, decompressed_image]
+    
+    finally:
+        os.remove("input_image.jpg")
+        print("input_image.jpg deleted.")
+        os.remove("compressed_image.jpg")
+        print("compressed_image.jpg deleted.")
+        os.remove("decompressed_image.jpg")
+        print("decompressed_image.jpg deleted.")
+        shutil.rmtree("lossy/output") #删除整个文件夹，如果lossless也有文件夹要删的话可以用这个指令
+        print("lossy/output folder deleted.")
+        
 '''
     output_buffer = io.BytesIO()
     processed_image.save(output_buffer, format='JPEG')
