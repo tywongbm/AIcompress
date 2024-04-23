@@ -20,14 +20,10 @@
   <!-- Main -->
   <div id="content">
 
-    <h1>Online AI Compressor</h1>
-    <!--
-      <h3>Some description (e.g. <b>Smaller</b> files, <b>higher</b> resolution!)</h3>
-    -->
-    <h3><b>Smaller</b> files, <b>higher</b> resolution!</h3>
+    <h1>AI Compressor</h1>
+    <h3>A cool online <b>AI compression</b> tool!</h3>
 
     <!-- Setting-->
-    
       <div class="first-option">
         <label class="radio-button">
           <input type="radio" name="compression-type" value="lossless" checked>Lossless
@@ -37,22 +33,29 @@
         </label>
       </div>
   
-    <!--
-    <div class="second-option">
-      <label>
-        <input type="radio" name="compression" value="compress" checked>Compress
-      </label>
-      <label>
-        <input type="radio" name="compression" value="decompress">Decompress
-      </label>
-    </div>
-    -->
+    <div class="option-container">
 
-    <!--
-      onclick="showSecondOption()"
-      onclick="hideSecondOption()"
-      display="none"
-    -->
+      <div class="second-option">
+        <label>
+          <input type="radio" name="compression" value="compress" checked>Compress
+        </label>
+        <label>
+          <input type="radio" name="compression" value="decompress" >Decompress
+        </label>
+      </div>
+
+      <div class="third-option">
+        <p>
+          <span style="float: left;">Less quality</span>
+          <span style="float: right;">Best quality</span>
+        </p><br>
+        <label>
+          <input type="range" min="1" max="7" step="1" value="1" class="slider" name="quality">
+        </label>
+      </div>
+
+    </div>
+    
 
     <!-- Files upload -->
     <div class="upload-region">

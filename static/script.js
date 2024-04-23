@@ -23,22 +23,29 @@ for (let i = 0; i < radioButtons.length; i++) {
   });
 }
 
-/*
-function showSecondOption() {
-    var secondOption = document.querySelector('.second-option');
-    secondOption.style.display = 'block';
+
+//option3 visible
+const firstOption = document.querySelector('.first-option');
+const secondOption = document.querySelector('.second-option');
+const thirdOption = document.querySelector('.third-option');
+const rangeInput = document.querySelector('input[name="quality"]');
+
+firstOption.addEventListener('change', handleOptionChange);
+secondOption.addEventListener('change', handleOptionChange);
+
+function handleOptionChange() {
+    const compressionType = document.querySelector('input[name="compression-type"]:checked').value;
+    const compression = document.querySelector('input[name="compression"]:checked').value;
+
+    if (compressionType === 'lossless' && compression === 'compress') {
+        thirdOption.style.display = 'block';
+
+    } else {
+        thirdOption.style.display = 'none';
+        rangeInput.value = 1;
+    }
 }
 
-function hideSecondOption() {
-    var secondOption = document.querySelector('.second-option');
-    secondOption.style.display = 'none';
-
-    var compressionTypeRadios = document.getElementsByName('compression');
-    for (var i = 0; i < compressionTypeRadios.length; i++) {
-        compressionTypeRadios[i].checked = false;
-    } 
-}
-*/
 
 //Upload reagion style
 const uploadRegion = document.querySelector('.upload-region');
@@ -65,29 +72,18 @@ fileUpload.addEventListener('change', (e) => {
     handleFiles(files);
 });
 
-
 function handleFiles(files) {
 
     //setting check
     const firstOption = document.querySelector('.first-option input[name="compression-type"]:checked');
-    /*
     const secondOption = document.querySelector('.second-option input[name="compression"]:checked');
+    const thirdOption = document.querySelector('.third-option input[name="quality"]');
 
-    if (!firstOption) {
-        alert('Upload failed, please select lossless/lossy');
-        return;
-    }
-
-    if (firstOption.value === 'compress' && !secondOption) {
-        alert('Upload failed, please select compress/decompress');
-        return;
-    }
-*/
     const file = files[0];
     const fileName = file.name;
     const fileExtension = fileName.split('.').pop();
 
-    if (fileExtension !== 'jpg' ) {
+    if (fileExtension !== 'jpg' && fileExtension !== 'png') {
         alert('Upload failed, only support jpg/png file');
         return;
     }
@@ -101,7 +97,8 @@ function handleFiles(files) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('option1', firstOption.value);
-    //formData.append('option2', secondOption.value);
+    formData.append('option2', secondOption.value);
+    formData.append('option3', thirdOption.value);
 
     fetch('/upload', {
         method: 'POST',

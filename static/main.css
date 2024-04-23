@@ -114,6 +114,7 @@ footer {
     font-size: 14px;
 }
 
+/* First option style*/
 .first-option input[type="radio"] {
     display: none;
 }
@@ -150,3 +151,34 @@ footer {
     font-weight: bold
   }
 
+/* Second and third option style*/
+.option-container {
+    display: flex;
+    width: 100%;
+    margin: 20px 0px;
+}
+
+.option-container .second-option,
+.option-container .third-option {
+    width: 50%;
+}
+
+.second-option {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.second-option label {
+    margin-right: 15px; 
+}
+
+
+.third-option p {
+    margin: 0;
+}
+
+.third-option input[type="range"] {
+    width: 80%;
+    margin: 0px 30px;
+}
