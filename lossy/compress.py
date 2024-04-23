@@ -16,4 +16,4 @@ masked_image = cv2.bitwise_and(input_image, input_image, mask=masking_image)
 # 还原图像：将掩码区域内的像素还原为白色
 restored_image = np.where(masking_image[..., None] > 0, masked_image, 255)
 #restored_image_path = os.path.join(current_directory, "./compressed_image.jpg")
-cv2.imwrite(current_directory + "./compressed_image.jpg", restored_image)
+cv2.imwrite(current_directory + "./output_image.jpg", restored_image)

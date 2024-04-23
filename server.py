@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, send_file
 import io
 import os
 import shutil
-from process import modify_image
 import subprocess
 from PIL import Image
 
