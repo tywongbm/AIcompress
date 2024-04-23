@@ -91,6 +91,8 @@ function handleFiles(files) {
     // Uploading
     uploadRegion.classList.add('uploading');
     uploadRegion.querySelector('.waiting').style.display = 'none';
+    uploadRegion.querySelector('.success').style.display = 'none';
+    uploadRegion.querySelector('.failure').style.display = 'none';
     uploadRegion.querySelector('.uploading').style.display = 'block';
     console.log("uploading")
 

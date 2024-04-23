@@ -5,8 +5,6 @@ import shutil
 import subprocess
 from PIL import Image
 
-current_directory = os.getcwd()
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -38,16 +36,16 @@ def upload():
         command = "python lossy/compress.py"
     
     elif (option1 == "lossy" and option2 == "decompress"):
-        command = "python lossy/test.py --model lossy/model/model_celeba.pth --img compressed_image.jpg --mask lossy/mask.png --output lossy/output --merge"
+        command = "python lossy/test.py --model lossy/model/model_celeba.pth --img input_image.jpg --mask lossy/mask.png --output lossy/output --merge"
     
     else:
         print("Invalide options")
     
     subprocess.call(command, shell=True)
-    ###如果输出文件不在根目录，要像下面一样复制到根目录
+    ###如果输出文件不在根目录，可以用shutil.copy复制到根目录
     ###另外输出文件必须是ouput_image.jpg的名字
     if (option1 == "lossy" and option2 == "decompress"):
-        shutil.copy(current_directory + "./lossy/output/result/result-compressed_image-mask.png", current_directory + "./output_image.jpg")
+        shutil.copy("./lossy/output/result/result-input_image-mask.png", "./output_image.jpg")
 
 
     output_image = Image.open('output_image.jpg')
@@ -56,7 +54,7 @@ def upload():
         output_buffer = io.BytesIO()
         output_image.save(output_buffer, format='JPEG')
         output_buffer.seek(0)
-        return send_file(output_buffer, mimetype='image/jpeg', as_attachment=True, download_name='output_iamge.jpg')
+        return send_file(output_buffer, mimetype='image/jpeg', as_attachment=True, download_name='output_image.jpg')
     
     finally:
         if os.path.exists("input_image.jpg"):
@@ -65,9 +63,6 @@ def upload():
         if os.path.exists("output_image.jpg"):
             os.remove("output_image.jpg")
             print("output_image.jpg deleted.")
-        if os.path.exists("lossy/output"):
-            shutil.rmtree("lossy/output") #删除整个文件夹，如果lossless也有文件夹要删的话可以用这个指令
-            print("lossy/output folder deleted.")
         
 
 if __name__ == '__main__':
