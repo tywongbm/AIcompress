@@ -24,6 +24,7 @@ def upload():
     option3 = request.form.get('option3') #1(less quality) to 7(best quality)
     command = "dir" 
 
+
     if (option1 == "lossless" and option2 == "compress"):
         ### Modify here ###
         ### 输入文件名字是input.image.jpg，quality level是option3
@@ -48,6 +49,7 @@ def upload():
     ###另外输出文件必须是ouput_image.jpg的名字
     if (option1 == "lossy" and option2 == "decompress"):
         shutil.copy(current_directory + "./lossy/output/result/result-compressed_image-mask.png", current_directory + "./output_image.jpg")
+
 
     output_image = Image.open('output_image.jpg')
     
