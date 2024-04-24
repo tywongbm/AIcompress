@@ -159,7 +159,7 @@ footer {
 }
 
 .option-container .second-option,
-.option-container .third-option {
+.option-container .third-fourth-option {
     width: 50%;
 }
 
@@ -173,12 +173,19 @@ footer {
     margin-right: 15px; 
 }
 
+.third-option input[type="radio"] {
+    margin-left: 0px;
+}
 
-.third-option p {
+.third-option label {
+    margin-right: 15px; 
+}
+
+.fourth-option p {
     margin: 0;
 }
 
-.third-option input[type="range"] {
+.fourth-option input[type="range"] {
     width: 80%;
     margin: 0px 30px;
 }

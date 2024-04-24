@@ -18,7 +18,8 @@ def upload():
 
     option1 = request.form.get('option1') #lossy or lossless
     option2 = request.form.get('option2') #compress or decompress
-    option3 = request.form.get('option3') #1(less quality) to 7(best quality)
+    option3 = request.form.get('option3') #vae or ae
+    option4 = request.form.get('option4') #1(less quality) to 7(best quality)
     command = "dir" 
 
 
