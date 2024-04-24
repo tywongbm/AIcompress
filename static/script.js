@@ -72,6 +72,26 @@ fileUpload.addEventListener('change', (e) => {
     handleFiles(files);
 });
 
+const download = document.getElementById('download-link');
+download.addEventListener('click', (e) => {
+    uploadRegion.classList.remove('success');
+    uploadRegion.classList.add('download');
+    uploadRegion.querySelector('.success').style.display = 'none';
+    uploadRegion.querySelector('.download').style.display = 'block';
+  });
+
+const tryAgain = document.getElementById('try-again');
+tryAgain.addEventListener('click', (e) => {
+    e.preventDefault();
+    uploadRegion.classList.remove('download');
+    uploadRegion.classList.remove('failure');
+    uploadRegion.classList.add('waiting');
+    uploadRegion.querySelector('.download').style.display = 'none';
+    uploadRegion.querySelector('.failure').style.display = 'none';
+    uploadRegion.querySelector('.waiting').style.display = 'block';
+  });
+
+
 function handleFiles(files) {
 
     //setting check
@@ -92,6 +112,7 @@ function handleFiles(files) {
     uploadRegion.classList.add('uploading');
     uploadRegion.querySelector('.waiting').style.display = 'none';
     uploadRegion.querySelector('.success').style.display = 'none';
+    uploadRegion.querySelector('.download').style.display = 'none';
     uploadRegion.querySelector('.failure').style.display = 'none';
     uploadRegion.querySelector('.uploading').style.display = 'block';
     console.log("uploading")
@@ -112,15 +133,15 @@ function handleFiles(files) {
         uploadRegion.querySelector('.uploading').style.display = 'none';
         uploadRegion.querySelector('.processing').style.display = 'block';
         console.log("processing")
-        return response.blob()
+        return response.json()
     })
-    .then(blob => {
+    .then(data => {
         uploadRegion.classList.remove('processing');
         uploadRegion.classList.add('success');
         uploadRegion.querySelector('.processing').style.display = 'none';
         uploadRegion.querySelector('.success').style.display = 'block';
         console.log("success")
-
+/*
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -129,22 +150,26 @@ function handleFiles(files) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+*/
+        const fileType = data.type;
+        const filePath = data.path;
+        const link = document.getElementById('download-link');
+        link.href = `/download/${fileType}/${filePath}`;
+        link.download = fileType === 'image' ? 'output_image.jpg' : 'output_file.py';
+        link.style.display = 'block';
         console.log("downloading");
     })
     .catch(error => {
+        uploadRegion.classList.remove('uploading');
         uploadRegion.classList.remove('processing');
+        uploadRegion.classList.remove('success');
+        uploadRegion.classList.remove('download');
         uploadRegion.classList.add('failure');
+        uploadRegion.querySelector('.uploading').style.display = 'none';
         uploadRegion.querySelector('.processing').style.display = 'none';
+        uploadRegion.querySelector('.success').style.display = 'none';
+        uploadRegion.querySelector('.download').style.display = 'none';
         uploadRegion.querySelector('.failure').style.display = 'block';
         console.error(error);
     });
 }
-
-const tryAgain = document.getElementById('try-again');
-tryAgain.addEventListener('click', (e) => {
-    e.preventDefault();
-    uploadRegion.classList.remove('success');
-    uploadRegion.querySelector('.success').style.display = 'none';
-    uploadRegion.querySelector('.failure').style.display = 'none';
-    uploadRegion.querySelector('.waiting').style.display = 'block';
-  });

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify
 import io
 import os
 import shutil
@@ -47,9 +47,17 @@ def upload():
     if (option1 == "lossy" and option2 == "decompress"):
         shutil.copy("./lossy/output/result/result-input_image-mask.png", "./output_image.jpg")
 
-
-    output_image = Image.open('output_image.jpg')
     
+    output_file_type = 'image'
+    output_file_path = 'output_image.jpg'
+    if (option1 == "lossless" and option2 == "compress"):
+        output_file_type = 'python'
+        output_file_path = 'output_file.py'
+    
+    return jsonify({'type': output_file_type, 'path': output_file_path})
+    '''
+    output_image = Image.open('output_image.jpg')
+
     try:
         output_buffer = io.BytesIO()
         output_image.save(output_buffer, format='JPEG')
@@ -63,7 +71,21 @@ def upload():
         if os.path.exists("output_image.jpg"):
             os.remove("output_image.jpg")
             print("output_image.jpg deleted.")
-        
+'''
+
+@app.route('/download/<file_type>/<file_path>', methods=['GET'])
+def download_file(file_type, file_path):
+
+    if file_type == 'image':
+        output_image = open(file_path, 'rb') 
+        return send_file(io.BytesIO(output_image.read()), mimetype='image/jpeg', as_attachment=True, download_name='output_image.jpg')
+    elif file_type == 'python':
+        output_python = open(file_path, 'rb') 
+        return send_file(io.BytesIO(output_python.read()), mimetype='text/x-python', as_attachment=True, download_name='output_file.py')
+    else:
+        return jsonify({'message': 'Invalid file type requested'}), 400
+    
+
 
 if __name__ == '__main__':
     app.run()
