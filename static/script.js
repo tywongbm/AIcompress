@@ -23,22 +23,38 @@ for (let i = 0; i < radioButtons.length; i++) {
   });
 }
 
-/*
-function showSecondOption() {
-    var secondOption = document.querySelector('.second-option');
-    secondOption.style.display = 'block';
+
+//option3 and 4 visible
+const firstOption = document.querySelector('.first-option');
+const secondOption = document.querySelector('.second-option');
+const thirdOption = document.querySelector('.third-option');
+const fourthOption = document.querySelector('.fourth-option');
+const rangeInput = document.querySelector('input[name="quality"]');
+
+firstOption.addEventListener('change', handleOptionChange);
+secondOption.addEventListener('change', handleOptionChange);
+
+function handleOptionChange() {
+    const compressionType = document.querySelector('input[name="compression-type"]:checked').value;
+    const compression = document.querySelector('input[name="compression"]:checked').value;
+
+    if (compressionType === 'lossless' && compression === 'compress') {
+        thirdOption.style.display = 'block';
+        fourthOption.style.display = 'block';
+
+    }
+    else if (compressionType === 'lossless' && compression === 'decompress'){
+        fourthOption.style.display = 'none';
+        rangeInput.value = 1;
+    }
+    
+    else {
+        thirdOption.style.display = 'none';
+        fourthOption.style.display = 'none';
+        rangeInput.value = 1;
+    }
 }
 
-function hideSecondOption() {
-    var secondOption = document.querySelector('.second-option');
-    secondOption.style.display = 'none';
-
-    var compressionTypeRadios = document.getElementsByName('compression');
-    for (var i = 0; i < compressionTypeRadios.length; i++) {
-        compressionTypeRadios[i].checked = false;
-    } 
-}
-*/
 
 //Upload reagion style
 const uploadRegion = document.querySelector('.upload-region');
@@ -65,63 +81,78 @@ fileUpload.addEventListener('change', (e) => {
     handleFiles(files);
 });
 
+// upload region content change
+function updateUploadStatus(uploadRegion, status) {
+    const states = ['waiting', 'uploading', 'processing', 'success', 'downloading', 'failure'];
+
+    states.forEach(state => {
+        uploadRegion.classList.remove(state);
+        const element = uploadRegion.querySelector('.' + state);
+        if (element) {
+            element.style.display = (state === status) ? 'block' : 'none';
+        }
+    });
+
+    uploadRegion.classList.add(status);
+}
+
+const download = document.getElementById('download-link');
+download.addEventListener('click', (e) => {
+    updateUploadStatus(uploadRegion, 'downloading');
+  });
+
+const tryAgain = document.getElementById('try-again');
+tryAgain.addEventListener('click', (e) => {
+    e.preventDefault();
+    updateUploadStatus(uploadRegion, 'waiting');
+  });
+
 
 function handleFiles(files) {
 
     //setting check
     const firstOption = document.querySelector('.first-option input[name="compression-type"]:checked');
-    /*
     const secondOption = document.querySelector('.second-option input[name="compression"]:checked');
+    const thirdOption = document.querySelector('.third-option input[name="lossless-model"]:checked');
+    const fourthOption = document.querySelector('.fourth-option input[name="quality"]');
 
-    if (!firstOption) {
-        alert('Upload failed, please select lossless/lossy');
-        return;
-    }
-
-    if (firstOption.value === 'compress' && !secondOption) {
-        alert('Upload failed, please select compress/decompress');
-        return;
-    }
-*/
     const file = files[0];
     const fileName = file.name;
     const fileExtension = fileName.split('.').pop();
 
-    if (fileExtension !== 'jpg' ) {
-        alert('Upload failed, only support jpg file');
+    if (fileExtension !== 'jpg' && fileExtension !== 'png') {
+        alert('Upload failed, only support jpg/png file');
         return;
     }
 
     // Uploading
-    uploadRegion.classList.add('uploading');
-    uploadRegion.querySelector('.waiting').style.display = 'none';
-    uploadRegion.querySelector('.uploading').style.display = 'block';
+    updateUploadStatus(uploadRegion, 'uploading');
     console.log("uploading")
 
     const formData = new FormData();
     formData.append('file', file);
     formData.append('option1', firstOption.value);
-    //formData.append('option2', secondOption.value);
+    formData.append('option2', secondOption.value);
+    formData.append('option3', thirdOption.value);
+    formData.append('option4', fourthOption.value);
+    console.log(firstOption.value)
+    console.log(secondOption.value)
+    console.log(thirdOption.value)
+    console.log(fourthOption.value)
 
     fetch('/upload', {
         method: 'POST',
         body: formData
     })
     .then(response => {
-        uploadRegion.classList.remove('uploading');
-        uploadRegion.classList.add('processing');
-        uploadRegion.querySelector('.uploading').style.display = 'none';
-        uploadRegion.querySelector('.processing').style.display = 'block';
+        updateUploadStatus(uploadRegion, 'processing');
         console.log("processing")
-        return response.blob()
+        return response.json()
     })
-    .then(blob => {
-        uploadRegion.classList.remove('processing');
-        uploadRegion.classList.add('success');
-        uploadRegion.querySelector('.processing').style.display = 'none';
-        uploadRegion.querySelector('.success').style.display = 'block';
+    .then(data => {
+        updateUploadStatus(uploadRegion, 'success');
         console.log("success")
-
+/*
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -130,22 +161,17 @@ function handleFiles(files) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+*/
+        const fileType = data.type;
+        const filePath = data.path;
+        const link = document.getElementById('download-link');
+        link.href = `/download/${fileType}/${filePath}`;
+        link.download = fileType === 'image' ? 'output_image.jpg' : 'output_file.py';
+        link.style.display = 'block';
         console.log("downloading");
     })
     .catch(error => {
-        uploadRegion.classList.remove('processing');
-        uploadRegion.classList.add('failure');
-        uploadRegion.querySelector('.processing').style.display = 'none';
-        uploadRegion.querySelector('.failure').style.display = 'block';
+        updateUploadStatus(uploadRegion, 'failure');
         console.error(error);
     });
 }
-
-const tryAgain = document.getElementById('try-again');
-tryAgain.addEventListener('click', (e) => {
-    e.preventDefault();
-    uploadRegion.classList.remove('success');
-    uploadRegion.querySelector('.success').style.display = 'none';
-    uploadRegion.querySelector('.failure').style.display = 'none';
-    uploadRegion.querySelector('.waiting').style.display = 'block';
-  });
